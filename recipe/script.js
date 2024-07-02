@@ -13,7 +13,7 @@ const getApi = async (element) => {
     if (element !== '') {
         const data = await (await fetch(url + element)).json();
 
-        resault.innerHTML ='';
+        resault.innerHTML = '';
         resault.innerHTML += `<img src='${data.meals[0].strMealThumb}'>
         <div class="details">
             <h2>${data.meals[0].strMeal}</h2>
@@ -22,35 +22,40 @@ const getApi = async (element) => {
         <div id="ingredient-con">
             <ul id='ingredient-list'></ul>
         </div>
-        <div id="recipe">
+        <div id="recipe" style="display: none;">
             <button id="hide-recipe">X</button>
             <pre id="instructions">${data.meals[0].strInstructions}</pre>
         </div>
         <button id="show-recipe">View Recipe</button>
-        `
-        const listEl = (() => {
+        `;
+
+        const listEl = () => {
             const list = document.querySelector('#ingredient-list');
-            for (let i = 0; i <= 20; i++) {
-                const ingredient = data.meals[0][ `strIngredient${i}`];
-                const measure = data.meals[0][ `strMeasure${i}`];
-                if (ingredient !== '' && measure !== '') {
-                    list.innerHTML += `<li>${ingredient} - ${measure}</li>`
+            for (let i = 1; i <= 20; i++) {
+                const ingredient = data.meals[0][`strIngredient${i}`];
+                const measure = data.meals[0][`strMeasure${i}`];
+                if (ingredient && measure) {
+                    list.innerHTML += `<li>${ingredient} - ${measure}</li>`;
                 }
             }
-        });
+        };
         listEl();
-        
-        const recipeEl = (() => {
-            
-            const btnX = document.querySelector('#hide-recipe')
+
+        const recipeEl = () => {
+            const recipe = document.querySelector('#recipe');
+            const btnX = document.querySelector('#hide-recipe');
             const btnShow = document.querySelector('#show-recipe');
 
-            btnShow.addEventListener('click', )
+            btnShow.addEventListener('click', () => {
+                recipe.style.display = 'block';
+                btnShow.style.display = 'none';
+            });
 
-        }); 
-        recipeEl();        
-    }   
+            btnX.addEventListener('click', () => {
+                recipe.style.display = 'none';
+                btnShow.style.display = 'block';
+            });
+        };
+        recipeEl();
+    }
 };
-
-// const abc = async () => {const abcData = await (await fetch(url)).json(); console.log(abcData);}
-// abc()
